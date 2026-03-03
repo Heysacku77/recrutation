@@ -1,0 +1,24 @@
+import pandas as pd
+import string
+
+def add_virtual_column(df: pd.DataFrame, role: str, new_column: str) -> pd.DataFrame:
+
+    role = "".join(role.split())
+    allowed_signs = set(string.ascii_letters + "_+-*")
+
+
+    if not set(new_column).issubset(allowed_signs):
+        return pd.DataFrame()
+
+
+    if not set(role).issubset(allowed_signs):
+        return pd.DataFrame()
+    
+    try:
+        nowadf = df.copy()
+        nowadf[new_column] = nowadf.eval(role)
+        return nowadf
+    except Exception:
+        return pd.DataFrame()
+
+
